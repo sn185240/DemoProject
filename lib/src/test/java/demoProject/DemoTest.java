@@ -3,10 +3,12 @@ package demoProject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import pages.IntranetLoginPage;
+import pages.IntranetPage;
 
 
 public class DemoTest {
@@ -27,13 +29,16 @@ public class DemoTest {
 	
 	
 	@Test(groups= {"intranetTest"})
-	public void validateLoginToIntranet(){
+	public void searchedStoreShouldBeDisplayedInRecentSection() throws InterruptedException{
 		IntranetLoginPage iop = PageFactory.initElements(driver, IntranetLoginPage.class);
-//	    IntranetPage ip= PageFactory.initElements(driver, IntranetPage.class);
+	    IntranetPage ip= PageFactory.initElements(driver, IntranetPage.class);
 	    
 	    iop.logInWithCredentials(user, password);
 	    driver.switchTo().frame("icpnavframe");
-//	    Assert.assertTrue(ip.verifySearchBarIsVisible(),"User isn't logged into the intranet successfully");
+	    ip.enterStore("autosite");
+	    Thread.sleep(2000);
+	    Assert.assertTrue(ip.verifyStoreIsDisplayedBelowTheSearchBar("autosite"),"The searched store isn't displayed below the search bar");	
 	}
+	
 	
 }
